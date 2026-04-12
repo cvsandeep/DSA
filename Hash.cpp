@@ -54,6 +54,25 @@ class HashTable {
             newNode->next = HashMap[index];
             HashMap[index] = newNode;
         }
+        int get(const string key) {
+            int index = Hask(key);
+             while(current != nullptr) { 
+                if(current->key == key) return current->value;
+                current = current->next;
+            }
+            return 0;
+        }
+    vector<string> keys() {
+        vector<string> allkeys;
+        for(int i=0; i<HASH_SIZE; i++) {
+            Node* temp = HashMap[i];
+            while(temp != nullptr) {
+                allkeys.pushback(temp->key);
+                temp = temp->next;
+            }
+        }
+        return allkeys;
+    }
 };
 
 
