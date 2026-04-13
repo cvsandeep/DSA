@@ -1,3 +1,5 @@
+#include <iostream>
+
 class Node {
  public:
   int data;
@@ -84,4 +86,41 @@ class SingleLL {
     count--;
     return true;
   }
+
+  bool empty() const { return !Head; }
+
+  bool get(int i, int& out) const {
+    if (i < 0 || i >= count || !Head) return false;
+    Node* t = Head;
+    for (int j = 0; j < i; j++) t = t->next;
+    out = t->data;
+    return true;
+  }
+
+  int indexOf(int v) const {
+    int i = 0;
+    for (Node* t = Head; t; t = t->next, i++)
+      if (t->data == v) return i;
+    return -1;
+  }
+
+  void print() const {
+    for (Node* t = Head; t; t = t->next)
+      std::cout << t->data << (t->next ? " " : "");
+    std::cout << "\n";
+  }
+
+  void clear() {
+    while (Head) {
+      Node* t = Head;
+      Head = Head->next;
+      delete t;
+    }
+    count = 0;
+  }
+
+  ~SingleLL() { clear(); }
+
+  SingleLL(const SingleLL&) = delete;
+  SingleLL& operator=(const SingleLL&) = delete;
 };
