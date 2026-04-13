@@ -1,78 +1,66 @@
+#include <array>
+#include <string>
+#include <vector>
+
 #define HASH_SIZE 16
+
 class Node {
-    public: 
-        string key;
-        int value;
-        Node* next;
-    Node(string key, int value) {
-        this->key = key;
-        this->value = value;
-        this->next = nullptr;
-    }
+ public:
+  std::string key;
+  int value;
+  Node* next;
+  Node(std::string k, int v) : key(std::move(k)), value(v), next(nullptr) {}
 };
+
 class HashTable {
-    private: 
-        Node* HashMap[HASH_SIZE]; //std::array<Node*, HASH_SIZE> HashMap;
-        int Hash(string s) {
-            int hash = 0;
-            int len = strlen(s);
-            
-            for(int i = 0; i < len; i++) {
-                hash = hash * 31 + (int)s[i];  // Better distribution
-                //hash = (hash + (int)s[i] *  23) % HASH_SIZE; // Since 23 is prime Number
-            }
-            return abs(hash) % HASH_SIZE;  // Handle negative values
-        }
-    deleteLL(Node* current){
-        if(current == nullptr) return;
-        delete(current->next)
-        delete current;
+  std::array<Node*, HASH_SIZE> HashMap{};
+
+  static int indexFor(const std::string& s) {
+    unsigned h = 0;
+    for (unsigned char c : s) h = h * 31u + c;
+    return static_cast<int>(h % HASH_SIZE);
+  }
+
+  static void deleteLL(Node* cur) {
+    while (cur) {
+      Node* n = cur->next;
+      delete cur;
+      cur = n;
     }
-    
-    public: 
-        HashTable(){
-            HashMap.fill(nullptr);
-        }
-        ~HashTable(){
-            for(auto& bucket : HashMap) {  // Range-based for
-                deleteLL(bucket);
-                bucket = nullptr;
-            }
-        }
-        void set(const string key,const int value) {
-            int index = Hash(key);
-            Node* current = HashMap[index];
-            while(current != nullptr) { // Check if Key already exists and update the value if it is.
-                if(current->key == key) {
-                    current->value = value;
-                    return;
-                }
-                current = current->next;
-            }
-            // Key doesn't exist, insert new node at head
-            Node* newNode = new Node(key,value);
-            newNode->next = HashMap[index];
-            HashMap[index] = newNode;
-        }
-        int get(const string key) {
-            int index = Hask(key);
-             while(current != nullptr) { 
-                if(current->key == key) return current->value;
-                current = current->next;
-            }
-            return 0;
-        }
-    vector<string> keys() {
-        vector<string> allkeys;
-        for(int i=0; i<HASH_SIZE; i++) {
-            Node* temp = HashMap[i];
-            while(temp != nullptr) {
-                allkeys.pushback(temp->key);
-                temp = temp->next;
-            }
-        }
-        return allkeys;
+  }
+
+ public:
+  HashTable() { HashMap.fill(nullptr); }
+
+  ~HashTable() {
+    for (Node* b : HashMap) deleteLL(b);
+  }
+
+  void set(const std::string& key, int value) {
+    int idx = indexFor(key);
+    for (Node* cur = HashMap[idx]; cur; cur = cur->next) {
+      if (cur->key == key) {
+        cur->value = value;
+        return;
+      }
     }
+    Node* n = new Node(key, value);
+    n->next = HashMap[idx];
+    HashMap[idx] = n;
+  }
+
+  int get(const std::string& key) const {
+    int idx = indexFor(key);
+    for (Node* cur = HashMap[idx]; cur; cur = cur->next)
+      if (cur->key == key) return cur->value;
+    return 0;
+  }
+
+  std::vector<std::string> keys() const {
+    std::vector<std::string> out;
+    for (Node* head : HashMap) {
+      for (Node* t = head; t; t = t->next) out.push_back(t->key);
+    }
+    return out;
+  }
 };
-
-
