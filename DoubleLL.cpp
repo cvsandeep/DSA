@@ -1,102 +1,142 @@
-class Node{
+class Node {
+ public:
   int data;
   Node* next;
   Node* prev;
-  void Node(int data) : data(data), next(nullptr), prev(nullptr);
-}
-class doubleLL {
+  Node(int d) : data(d), next(nullptr), prev(nullptr) {}
+};
+
+class DoubleLL {
+ public:
   Node* Head;
   Node* Tail;
   int count;
-  void doulbleLL(int data) {
-    Head = Tail = new Node(data);
+
+  DoubleLL(int v) {
+    Head = Tail = new Node(v);
     count = 1;
   }
-  void append(int data){
-    Node* temp = Head;
-    Head = new Node(data);
-    if(Tail == nullptr) Tail = Head;
-    Head->next = temp;
-    temp->prev = Head
+
+  void append(int v) {
+    Node* n = new Node(v);
+    if (!Head) {
+      Head = Tail = n;
+      count = 1;
+      return;
+    }
+    n->prev = Tail;
+    Tail->next = n;
+    Tail = n;
     count++;
-  }
-  void DeleteLast() {
-    if(count == 0) return;
-    Node* temp = Tail;
-    Tail = Tail->prev;
-    if(count == 1){
-      Head = Tail;
-    }
-    count--;
-  }
-  void prepend(int data) {
-    Node* temp = Tail;
-    Tail = new Node(data);
-    if(Head == nullptr) Head == Tail;
-    temp->next = Tail;
-    Tail->prev = temp;
-    count++;
-  }
-  void DeleteFirst(){
-    if(count == 0 ) return;
-    Node* temp = Head;
-    if(count == 1) {
-      Head = Tail = nullptr;
-    } else {
-      Head = temp->next;
-      Head->prev = nullptr;
-    }
-    delete temp;
-    count--;
-  }
-  bool Get(int index, int& out) {
-    if((count == 0) || index < 0 || index > count) return false;
-    for ( Node* temp = Head; index ; index--) temp = temp->next;
-    out = temp->data;
-    return true
-  }
-  bool set(int index, int data){
-    if((count == 0) || index < 0 || index > count) return false;
-    for ( Node* temp = Head; index ; index--) temp = temp->next;
-    temp->data = data;
-  }
-  bool Insert(int index, int data) (
-    if(index < 0 || index > count) return false;
-    if(index == 0) {
-      prepend(data); 
-    } else(index == count) {
-      append(data);
-    } else {
-      Node* newNode = new Node(data);
-      Node* current = Head;
-      for(int i=0; i<index-1; i++) {
-        current = current->next
-      }
-      newNode->prev = current;
-      newNode->next = current->next;
-      current->next->prev = newNode;
-      current->next> newNode;
-      count++;
-    }
-    return true;
-  }
-  bool DeleteNode(int index){
-    if(index < 0 || index > count) return false;
-    if(index == 0) {
-      DeleteFirst(); 
-    } else(index == count) {
-      DeleteLast();
-    } else {
-      Node* current = Head;
-      for(int i=0; i<index-1; i++) {
-        current = current->next
-      }
-      Node* temp = current->next
-      curent->next = temp->next;
-      temp->next->prev = current;
-      delete temp;
-      count--;
-    }
   }
 
+  void prepend(int v) {
+    Node* n = new Node(v);
+    if (!Head) {
+      Head = Tail = n;
+      count = 1;
+      return;
+    }
+    n->next = Head;
+    Head->prev = n;
+    Head = n;
+    count++;
+  }
+
+  void DeleteLast() {
+    if (!Tail) return;
+    Node* del = Tail;
+    if (Head == Tail) {
+      Head = Tail = nullptr;
+    } else {
+      Tail = Tail->prev;
+      Tail->next = nullptr;
+    }
+    delete del;
+    count--;
+  }
+
+  void DeleteFirst() {
+    if (!Head) return;
+    Node* del = Head;
+    if (Head == Tail) {
+      Head = Tail = nullptr;
+    } else {
+      Head = Head->next;
+      Head->prev = nullptr;
+    }
+    delete del;
+    count--;
+  }
+
+  bool Get(int i, int& out) const {
+    if (i < 0 || i >= count || !Head) return false;
+    Node* t = Head;
+    for (int j = 0; j < i; j++) t = t->next;
+    out = t->data;
+    return true;
+  }
+
+  bool set(int i, int v) {
+    if (i < 0 || i >= count || !Head) return false;
+    Node* t = Head;
+    for (int j = 0; j < i; j++) t = t->next;
+    t->data = v;
+    return true;
+  }
+
+  bool Insert(int i, int v) {
+    if (i < 0 || i > count) return false;
+    if (i == 0) {
+      prepend(v);
+      return true;
+    }
+    if (i == count) {
+      append(v);
+      return true;
+    }
+    Node* cur = Head;
+    for (int j = 0; j < i - 1; j++) cur = cur->next;
+    Node* n = new Node(v);
+    n->next = cur->next;
+    n->prev = cur;
+    cur->next->prev = n;
+    cur->next = n;
+    count++;
+    return true;
+  }
+
+  bool DeleteNode(int i) {
+    if (i < 0 || i >= count || !Head) return false;
+    if (i == 0) {
+      DeleteFirst();
+      return true;
+    }
+    if (i == count - 1) {
+      DeleteLast();
+      return true;
+    }
+    Node* t = Head;
+    for (int j = 0; j < i; j++) t = t->next;
+    t->prev->next = t->next;
+    t->next->prev = t->prev;
+    delete t;
+    count--;
+    return true;
+  }
+
+  void clear() {
+    while (Head) {
+      Node* n = Head->next;
+      delete Head;
+      Head = n;
+    }
+    Tail = nullptr;
+    count = 0;
+  }
+
+  ~DoubleLL() { clear(); }
+
+  DoubleLL(const DoubleLL&) = delete;
+  DoubleLL& operator=(const DoubleLL&) = delete;
 };
