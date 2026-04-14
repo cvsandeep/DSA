@@ -1,51 +1,55 @@
-class Heap {
-  private:
-    vector<int> heap;
-    int leftChild(int index)  { return 2*index + 1; }
-    int rightChild(int index) { return 2*index + 2; }
-    int parent(int index)     { return (index-1)/2; }
-    void swap(int index1, int index2){
-      int temp = heap[index1];
-      heap[index1] = heap[index2]
-      heap[index2] = temp;  
-    }
-  public:
-      void insert(int value) {
-        heap.push_back(value);
-        int current = heap.size()-1;
-        while(current > 0 && heap[current] > heap[parent(current)] ) {
-          swap( current , parent(current) );
-          current = parent(current);
-        }
-      }
-      int remove() {
-        if(heap.empty()) return INT_MIN;
-        int maxValue = heap.front()
-        if(heap.size() == 1) {
-          heap.pop_back();
-        } else {
-          head[0] = heap.back();
-          heap.pop_back();
-          sinkDown(0)
-        }
-        return maxValue;
-      }
-      void sinkDown(int index) {
-        int maxIndex = index;
-        while(true){
-          int leftIndex = leftchild(index);
-          int rightIndex = rightChild(index);
-          if(leftIndex < heap.size() && heap[leftIndex] > heap[maxIndex])
-            maxIndex = leftIndex;
-          if(rightIndex < heap.size() && heap[rightIndex] > heap[maxIndex])
-            maxIndex = rightIndex;
+#include <climits>
+#include <vector>
 
-          if(maxIndex != index) {
-            swap(maxIndex, index);
-            index = maxIndex;
-          } else {
-            return;
-          }
-        }
-      }
+class Heap {
+  std::vector<int> heap;
+
+  static int leftChild(int i) { return 2 * i + 1; }
+  static int rightChild(int i) { return 2 * i + 2; }
+  static int parent(int i) { return (i - 1) / 2; }
+
+  void swap(int i, int j) {
+    int t = heap[i];
+    heap[i] = heap[j];
+    heap[j] = t;
+  }
+
+  void sinkDown(int i) {
+    while (true) {
+      int maxI = i;
+      int L = leftChild(i);
+      int R = rightChild(i);
+      if (L < (int)heap.size() && heap[L] > heap[maxI]) maxI = L;
+      if (R < (int)heap.size() && heap[R] > heap[maxI]) maxI = R;
+      if (maxI == i) return;
+      swap(i, maxI);
+      i = maxI;
+    }
+  }
+
+ public:
+  void insert(int v) {
+    heap.push_back(v);
+    int i = (int)heap.size() - 1;
+    while (i > 0 && heap[i] > heap[parent(i)]) {
+      swap(i, parent(i));
+      i = parent(i);
+    }
+  }
+
+  int remove() {
+    if (heap.empty()) return INT_MIN;
+    int top = heap[0];
+    if (heap.size() == 1) {
+      heap.pop_back();
+      return top;
+    }
+    heap[0] = heap.back();
+    heap.pop_back();
+    sinkDown(0);
+    return top;
+  }
+
+  bool empty() const { return heap.empty(); }
+  int size() const { return (int)heap.size(); }
 };
