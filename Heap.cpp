@@ -50,6 +50,8 @@ class Heap {
     return top;
   }
 
+  int peek() const { return heap.empty() ? INT_MIN : heap[0]; }
+
   bool empty() const { return heap.empty(); }
   int size() const { return (int)heap.size(); }
 };
