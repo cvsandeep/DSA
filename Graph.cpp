@@ -1,13 +1,22 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+
 class Graph {
-  private:
-    unordered_map<string, unordered_set<string> > adjList;
-  public:
-    void printGraph(void) {
-      for(auto kvPair = adjList.begin() ; kvpair != adjList.end() ; kvpair++){
-        cout << kvpair->first <<  ":[";
-        for(auto it : kvpair->second) cout << it;
-        cout << "]" << endl;
+  std::unordered_map<std::string, std::unordered_set<std::string>> adjList;
+
+ public:
+  void printGraph() const {
+    for (const auto& kv : adjList) {
+      std::cout << kv.first << ": [";
+      bool first = true;
+      for (const auto& n : kv.second) {
+        if (!first) std::cout << ' ';
+        first = false;
+        std::cout << n;
       }
+      std::cout << "]\n";
     }
     bool addVertex(const string& vertex) {
         // If vertex doesn't exist, create it with empty set
