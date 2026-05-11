@@ -38,3 +38,26 @@ class Sort{
         }
     }
 };
+
+void sample_test_sort() {
+    Sort s;
+    std::vector<int> a = {5, 2, 8, 1, 9};
+    std::vector<int> b = a, c = a;
+    s.bubbleSort(a);
+    s.selectionSort(b);
+    s.insertionSort(c);
+    std::cout << "bubble: ";
+    for (int x : a) std::cout << x << ' ';
+    std::cout << "\nselection: ";
+    for (int x : b) std::cout << x << ' ';
+    std::cout << "\ninsertion: ";
+    for (int x : c) std::cout << x << ' ';
+    std::cout << '\n';
+}
+
+#if defined(SAMPLE_TEST_MAIN)
+int main() {
+    sample_test_sort();
+    return 0;
+}
+#endif

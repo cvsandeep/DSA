@@ -124,3 +124,20 @@ class SingleLL {
   SingleLL(const SingleLL&) = delete;
   SingleLL& operator=(const SingleLL&) = delete;
 };
+
+void sample_test_single_ll() {
+    SingleLL list(1);
+    list.append(2);
+    list.prepend(0);
+    std::cout << "list: ";
+    list.print();
+    int x = 0;
+    if (list.get(2, x)) std::cout << "index 2 -> " << x << '\n';
+}
+
+#if defined(SAMPLE_TEST_MAIN)
+int main() {
+    sample_test_single_ll();
+    return 0;
+}
+#endif

@@ -1,4 +1,5 @@
 #include <array>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -64,3 +65,18 @@ class HashTable {
     return out;
   }
 };
+
+void sample_test_hash() {
+    HashTable t;
+    t.set("a", 1);
+    t.set("b", 2);
+    t.set("a", 10);
+    std::cout << "a=" << t.get("a") << " b=" << t.get("b") << '\n';
+}
+
+#if defined(SAMPLE_TEST_MAIN)
+int main() {
+    sample_test_hash();
+    return 0;
+}
+#endif

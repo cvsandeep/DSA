@@ -18,39 +18,56 @@ class Graph {
       }
       std::cout << "]\n";
     }
-    bool addVertex(const string& vertex) {
-        // If vertex doesn't exist, create it with empty set
-        if (adjList.find(vertex) == adjList.end()) {
-            adjList[vertex] = unordered_set<string>();
-            return true;
-        }
-        return false; // Vertex already exists
+  }
+
+  bool addVertex(const std::string& vertex) {
+    if (adjList.find(vertex) == adjList.end()) {
+      adjList[vertex] = {};
+      return true;
     }
-    bool addEdge(string vertex1, string vertex2) {
-		    if(adjList.count(vertex1) != 0 && adjList.count(vertex2) != 0 ) {
-		        adjList.at(vertex1).insert(vertex2);
-		        adjList.at(vertex2).insert(vertex1);
-		        return true;
-		    }
-		    return false;
-		}
-    bool removeEdge(string vertex1, string vertex2) {
-         if(adjList.count(vertex1) != 0 && adjList.count(vertex2) != 0 ) {
-            adjList.at(vertex1).erase(vertex2);
-		        adjList.at(vertex2).erase(vertex1);
-		        return true;
-         }
-      return false;
+    return false;
+  }
+
+  bool addEdge(const std::string& vertex1, const std::string& vertex2) {
+    if (adjList.count(vertex1) != 0 && adjList.count(vertex2) != 0) {
+      adjList.at(vertex1).insert(vertex2);
+      adjList.at(vertex2).insert(vertex1);
+      return true;
     }
-    bool removeVertex(string vertex) {
-      if(adjList.count(vertex) != 0) {
-        for( auto i : adjList[vertex]){
-          adjList[i].erase(vertex);
-        }
-        adjList.erase(vertex);
-        return true;
-      }
-      return false;
+    return false;
+  }
+
+  bool removeEdge(const std::string& vertex1, const std::string& vertex2) {
+    if (adjList.count(vertex1) != 0 && adjList.count(vertex2) != 0) {
+      adjList.at(vertex1).erase(vertex2);
+      adjList.at(vertex2).erase(vertex1);
+      return true;
     }
-    
+    return false;
+  }
+
+  bool removeVertex(const std::string& vertex) {
+    if (adjList.count(vertex) != 0) {
+      for (const auto& i : adjList[vertex]) adjList[i].erase(vertex);
+      adjList.erase(vertex);
+      return true;
+    }
+    return false;
+  }
+};
+
+void sample_test_graph() {
+  Graph g;
+  g.addVertex("A");
+  g.addVertex("B");
+  g.addEdge("A", "B");
+  std::cout << "Graph:\n";
+  g.printGraph();
 }
+
+#if defined(SAMPLE_TEST_MAIN)
+int main() {
+  sample_test_graph();
+  return 0;
+}
+#endif

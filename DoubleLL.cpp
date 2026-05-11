@@ -140,3 +140,21 @@ class DoubleLL {
   DoubleLL(const DoubleLL&) = delete;
   DoubleLL& operator=(const DoubleLL&) = delete;
 };
+
+#include <iostream>
+
+void sample_test_double_ll() {
+    DoubleLL list(10);
+    list.append(20);
+    list.prepend(5);
+    int v = 0;
+    list.Get(1, v);
+    std::cout << "index 1 -> " << v << " count=" << list.count << '\n';
+}
+
+#if defined(SAMPLE_TEST_MAIN)
+int main() {
+    sample_test_double_ll();
+    return 0;
+}
+#endif

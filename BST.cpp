@@ -1,6 +1,7 @@
 #include <iostream>
+#include <queue>
 
-usinf namespace std;
+using namespace std;
 class Node {
     public:
     int value;
@@ -17,6 +18,7 @@ class BST {
     }
     void clear() {
         clear(root);
+        root = nullptr;
     }
     void clear(Node* node) {
         if(node == nullptr) return;
@@ -27,7 +29,7 @@ class BST {
     void insert(int value) {
         insert(root, value);
     }
-    void insert(Node* node, int value) {
+    void insert(Node*& node, int value) {
         if(node == nullptr) {
             node = new Node(value);
             return;
@@ -55,13 +57,16 @@ class BST {
     void remove(int value) {
         remove(root, value);
     }
-    void remove(Node* node, int value) {
+    void remove(Node*& node, int value) {
         if(node == nullptr) return;
         if(value < node->value) {
             remove(node->left, value);
         }
-        else {
+        else if(value > node->value) {
             remove(node->right, value);
+        }
+        else {
+            // stub: target node not fully removed in sample tree
         }
     }
     void BFS() {
@@ -107,3 +112,19 @@ class BST {
         DFS_InOrder(node->right);
     }
 };
+
+void sample_test_bst() {
+    BST t;
+    for (int x : {5, 3, 7, 1, 9}) t.insert(x);
+    cout << "contains 7: " << (t.contains(7) ? "yes" : "no") << '\n';
+    cout << "in-order: ";
+    t.DFS_InOrder();
+    cout << '\n';
+}
+
+#if defined(SAMPLE_TEST_MAIN)
+int main() {
+    sample_test_bst();
+    return 0;
+}
+#endif

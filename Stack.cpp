@@ -57,3 +57,19 @@ class Stack {
   Stack(const Stack&) = delete;
   Stack& operator=(const Stack&) = delete;
 };
+
+void sample_test_stack() {
+    Stack s;
+    s.push(10);
+    s.push(20);
+    std::cout << "peek=" << s.peek() << " pop=" << s.pop()
+              << " size=" << s.size() << '\n';
+    s.print();
+}
+
+#if defined(SAMPLE_TEST_MAIN)
+int main() {
+    sample_test_stack();
+    return 0;
+}
+#endif

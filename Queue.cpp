@@ -52,3 +52,22 @@ class Queue {
   int getLast() const { return last ? last->data : -1; }
   int getLength() const { return length; }
 };
+
+#include <iostream>
+
+void sample_test_queue() {
+    Queue q(1);
+    q.enqueue(2);
+    q.enqueue(3);
+    std::cout << "front=" << q.getFirst() << " back=" << q.getLast()
+              << " len=" << q.getLength() << '\n';
+    while (q.getLength() > 0)
+        std::cout << "dequeue " << q.dequeue() << '\n';
+}
+
+#if defined(SAMPLE_TEST_MAIN)
+int main() {
+    sample_test_queue();
+    return 0;
+}
+#endif

@@ -1,4 +1,5 @@
 #include <climits>
+#include <iostream>
 #include <vector>
 
 class Heap {
@@ -55,3 +56,18 @@ class Heap {
   bool empty() const { return heap.empty(); }
   int size() const { return (int)heap.size(); }
 };
+
+void sample_test_heap() {
+    Heap h;
+    for (int x : {3, 9, 5, 1, 7}) h.insert(x);
+    std::cout << "max-heap pops: ";
+    while (!h.empty()) std::cout << h.remove() << ' ';
+    std::cout << '\n';
+}
+
+#if defined(SAMPLE_TEST_MAIN)
+int main() {
+    sample_test_heap();
+    return 0;
+}
+#endif

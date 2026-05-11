@@ -25,15 +25,19 @@ int numIslands(std::vector<std::vector<int>>& grid) {
   return n;
 }
 
-#if 0
-int main() {
+void sample_test_islands() {
   std::vector<std::vector<int>> grid = {
       {1, 1, 0, 0, 0},
       {1, 1, 0, 0, 0},
       {0, 0, 1, 0, 0},
       {0, 0, 0, 1, 1},
   };
-  std::printf("%d\n", numIslands(grid));
+  std::printf("islands=%d\n", numIslands(grid));
+}
+
+#if defined(SAMPLE_TEST_MAIN)
+int main() {
+  sample_test_islands();
   return 0;
 }
 #endif

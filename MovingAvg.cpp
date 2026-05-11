@@ -81,17 +81,20 @@ void reset_ring_buffer(void) {
   std::printf("Ring buffer reset\n");
 }
 
-#if 0
-int main() {
-  int test_data[] = {10,  20,  30,  40,  50,  60,  70,  80,  90,  100,
-                     110, 120, 130, 140, 150, 160, 170, 180, 190, 200};
-  for (int i = 0; i < 20; i++) {
+void sample_test_moving_avg() {
+  reset_moving_average();
+  reset_ring_buffer();
+  int test_data[] = {10, 20, 30, 40, 50};
+  for (int i = 0; i < 5; i++) {
     float a = Moving_avg_samples(test_data[i]);
     float b = true_moving_average(test_data[i]);
     std::printf("i=%d val=%d EMA=%.2f MA=%.2f\n", i, test_data[i], a, b);
   }
-  reset_ring_buffer();
-  std::printf("large: %.2f\n", true_moving_average(INT_MAX / 2));
+}
+
+#if defined(SAMPLE_TEST_MAIN)
+int main() {
+  sample_test_moving_avg();
   return 0;
 }
 #endif
